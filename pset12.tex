@@ -6,6 +6,7 @@
 \usepackage[framemethod=TikZ]{mdframed}
 
 \newcommand\Z{\ensuremath{\mathbb{Z}}}
+\newcommand\Q{\ensuremath{\mathbb{Q}}}
 
 \title{Problem Set 12: Strong Induction}
 \author{CS/MATH 113 Discrete Mathematics}
@@ -27,18 +28,33 @@ In solving the problems below, note that mathematical induction is just a specia
   \part Every integer \( n \geq 2 \) is either prime or a product of primes.\\
     \textit{Hint}: Consider the cases where \( k+1 \) is prime and where it is composite.
    \begin{solution}
-    % Enter your solution here.
+     The argument in the inductive step is along the following lines.
+
+     If $k+1$ is prime, then the inductive step is trivially true.\\
+     If $k+1$ is composite, it is the product of 2 smaller numbers, on which the IH applies and which are therefore, either prime of the product of primes. $k+1$ is therefore the product of primes.     
    \end{solution}
 
  \part \( n! \ge n \) for all integers, \( n \geq 1 \) using strong induction.
 \begin{solution}
-    % Enter your solution here.
+  The argument in the inductive step is along the following lines. Note that it uses mathematical induction, which is just a form of strong induction.
+
+  $\qquad IH: k! \ge k$\\
+  Multiplying with $k+1$ on both sides yields.
+
+  $\qquad (k+1)k! \ge (k+1)k$\\
+  The LHS is $(k+1)!$. On the RHS, as $k\ge 1$ on account of the domain, $(k+1)k \ge k$.
+  
+  $\qquad \implies (k+1)! \ge (k+1)$\\
+  This is exactly $P(k+1)$.
   \end{solution}
 
 \part  \( \Z^n \) is countable for all integers \( n \geq 1 \).\\
   \textit{Hint}: You can refer to known results and proofs to simplify your proof.\\
   \textit{Note}: Recall that \( \Z^n = \underbrace{\Z\times\Z\times\ldots\times\Z}_{n \text{ times}} \)
   \begin{solution}
+    The basis step for $n=1$ is trivial.
+
+    For the inductive step, $\Z^{k+1}$ can be written as the product of smaller powers of $\Z$, on which the IH applies, and which are therefore countable. It remains to show that the product of 2 countable sets is countable. This is a known result, as illustrated in the proof of the countability of \Q.
     % Enter your solution here.
   \end{solution}
 \end{parts}
@@ -49,7 +65,22 @@ In solving the problems below, note that mathematical induction is just a specia
   \textit{Note}: You will have to consider all cases for the number of sticks: \( 4k+1, 4k+2, 4k+3, \) and \( 4k+4 \), and show that Player 2 can win in one case, and that Player 1 can win in all the other cases.
 
   \begin{solution}
-    % Enter your solution here.
+    Any number of sticks at the start of the game can be written as $4k+1$, $4k+2$, $4k+3$, or $4k+4$ for some integer $k\ge0$.
+
+    \underline{Case 1}: Proof by strong induction that Player 2 has a winning strategy with $4k+1$ initial sticks.
+
+    For the basis step, $k=0$ and the starting number of sticks is $4(0) + 1 = 1$. Player 1 removes the only stick and so Player 2 wins.
+
+    For the inductive step, the game starts with $4(k+1) + 1=4k+5$ sticks. Player 1 starts with a choice to remove 1, 2, or 3 sticks. If Player 1 removes 1 stick, Player 2 will remove 3 sticks in their turn, thus leaving Player 1 with $4k+1$ sticks. Similarly, if Player 1 removes 2 sticks, Player 2 will remove 2 sticks in response. And if Player 3 removes 3 sticks, Player 2 will remove 1 stick in response. In every case, Player 1 is left to move with a pile containing $4k+1$ sticks. By IH, we know that Player 2 can win from this stage.
+    
+    \underline{Case 2}: Proof by strong induction that Player 1 has a winning strategy with $4k+2$ initial sticks.
+
+    For the basis step, $k=0$ and the starting number of sticks is $4(0) + 2 = 2$. Player 1 removes one stick, forcing Player 2 to remove the only remaining stick, and so Player 1 wins.
+
+    For the inductive step, the game starts with $4(k+1) + 2=4k+6$ sticks. Player 1 starts with a choice to remove 1, 2, or 3 sticks. Player 1 removes 3 sticks, the maximum allowed in a turn. Player 2 may remove 1, 2, or 3 sticks in response, leaving Player 1 with a pile containing  $4k+2, 4k+1,$ or $4k$ sticks. Ih applies to all of these are Player 1 can win from here on.
+
+    \underline{Cases 3, 4}: Can be argued similarly to Case 2.
+    
   \end{solution}
   
   \question 
@@ -70,17 +101,25 @@ Next, we must show that \( P(8), \ldots, P(n) \) imply \( P(n + 1) \) for all \(
 \end{proof}
 \end{mdframed}
 
-a)
-This proof contains a critical logical error. (In fact, the claim is false!) Identify the first sentence in the proof that does not follow and explain what went wrong.
+\begin{parts}
+\part This proof contains a critical logical error. (In fact, the claim is false!) Identify the first sentence in the proof that does not follow and explain what went wrong.
   \begin{solution}
-      
-  \end{solution}
-b)
-Provide a correct strong induction proof that a class with \( n \geq 12 \) students can be divided into groups of 4 or 5.
-  \begin{solution}
-      
-  \end{solution}
+    The error is in the second last statement which assumes $P(n-3)$ based on the IH.
 
+    The smallest case for the inductive step is $n=10$, so $P(n-3)$ is $P(7)$ in this case. $P(7)$ is not defined, and in fact cannot be shown to be true.
+  \end{solution}
+\part Provide a correct strong induction proof that a class with \( n \geq 12 \) students can be divided into groups of 4 or 5.
+  \begin{solution}
+    For the basis step, we show that $P(12), P(13), P(14),$ and $P(15)$ are true.
+    \begin{align*}
+      12  &= 4 + 4 + 4 \\
+      13  &= 4 + 4 + 5 \\
+      14 &= 4 + 5 + 5 \\
+      15 &= 5 + 5 + 5
+      \end{align*}
+      The inductive step is argued similarly as in the question.
+  \end{solution}
+\end{parts}
 \end{questions}
 \end{document}
 %%% Local Variables:
